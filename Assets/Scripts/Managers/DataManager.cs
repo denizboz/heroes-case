@@ -50,7 +50,7 @@ namespace Managers
                     Experience = 0,
                     Level = 1,
                     
-                    Unlocked = i < 3
+                    IsUnlocked = i < 3
                 };
             }
             

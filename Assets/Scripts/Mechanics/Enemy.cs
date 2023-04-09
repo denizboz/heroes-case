@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace Core
+namespace Mechanics
 {
     public class Enemy : Battler
     {

@@ -1,3 +1,4 @@
+using UI;
 using UnityEngine;
 using Utilities;
 
@@ -9,7 +10,5 @@ namespace Managers
         {
             m_dependencyContainer.Bind<MenuManager>(this);
         }
-        
-        
     }
 }

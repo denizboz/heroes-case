@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Core
+namespace Mechanics
 {
     public abstract class Battler : MonoBehaviour
     {

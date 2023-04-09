@@ -1,7 +1,6 @@
 using UnityEngine;
-using DG.Tweening;
 
-namespace Core
+namespace Mechanics
 {
     public class Hero : Battler
     {

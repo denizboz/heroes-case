@@ -43,6 +43,6 @@ namespace Utilities
         public int Experience;
         public int Level;
 
-        public bool Unlocked;
+        public bool IsUnlocked;
     }
 }
