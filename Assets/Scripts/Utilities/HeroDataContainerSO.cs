@@ -4,14 +4,20 @@ using UnityEngine.Serialization;
 
 namespace Utilities
 {
-    [CreateAssetMenu(fileName = "HeroDataContainer", menuName = "Data Container/Hero Fixed Data Container")]
+    [CreateAssetMenu(fileName = "HeroDataContainer", menuName = "Data Container/Hero Data Container")]
     public class HeroDataContainerSO : ScriptableObject
     {
-        [Tooltip("Lower Limit For Max Health")]
-        public int MinHealth = 3;
-        [Tooltip("Upper Limit For Max Health")]
-        public int MaxHealth = 10;
-
+        /// <summary>
+        /// Lower limit for maximum health range.
+        /// </summary>
+        [Tooltip("Lower Limit for Max Health")]
+        public int MinHealthLimit = 3;
+        
+        /// <summary>
+        /// Upper limit for maximum health range.
+        /// </summary>
+        [Tooltip("Upper Limit for Max Health")]
+        public int MaxHealthLimit = 10;
 
         public int MinAttackPower = 1;
         public int MaxAttackPower = 5;
@@ -26,6 +32,7 @@ namespace Utilities
         public Color Color;
     }
 
+    [Serializable]
     public struct HeroData
     {
         public string Name;
@@ -36,6 +43,6 @@ namespace Utilities
         public int Experience;
         public int Level;
 
-        public int Unlocked; // 1 for true, 0 for false
+        public bool Unlocked;
     }
 }

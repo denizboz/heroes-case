@@ -12,74 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659ead14984845bcb06a5b123ebe6da9, type: 3}
   m_Name: HeroDataContainer
   m_EditorClassIdentifier: 
-  HeroDataArray:
+  MinHealthLimit: 3
+  MaxHealthLimit: 10
+  MinAttackPower: 1
+  MaxAttackPower: 5
+  IdentityArray:
   - Name: Feynman
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    MaxHealth: 0
-    AttackPower: 0
-    Experience: 0
-    Level: 0
-    Unlocked: 0
+    Color: {r: 0, g: 0.7666669, b: 1, a: 1}
   - Name: Einstein
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    MaxHealth: 0
-    AttackPower: 0
-    Experience: 0
-    Level: 0
-    Unlocked: 0
+    Color: {r: 1, g: 0, b: 0, a: 1}
   - Name: Curie
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    MaxHealth: 0
-    AttackPower: 0
-    Experience: 0
-    Level: 0
-    Unlocked: 0
+    Color: {r: 0.99853635, g: 1, b: 0, a: 1}
   - Name: Hegel
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    MaxHealth: 0
-    AttackPower: 0
-    Experience: 0
-    Level: 0
-    Unlocked: 0
+    Color: {r: 0, g: 1, b: 0.12291002, a: 1}
   - Name: Kant
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    MaxHealth: 0
-    AttackPower: 0
-    Experience: 0
-    Level: 0
-    Unlocked: 0
-  - Name: Wittgenstein
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    MaxHealth: 0
-    AttackPower: 0
-    Experience: 0
-    Level: 0
-    Unlocked: 0
-  - Name: 
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    MaxHealth: 0
-    AttackPower: 0
-    Experience: 0
-    Level: 0
-    Unlocked: 0
-  - Name: 
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    MaxHealth: 0
-    AttackPower: 0
-    Experience: 0
-    Level: 0
-    Unlocked: 0
-  - Name: 
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    MaxHealth: 0
-    AttackPower: 0
-    Experience: 0
-    Level: 0
-    Unlocked: 0
-  - Name: 
-    Color: {r: 0, g: 0, b: 0, a: 0}
-    MaxHealth: 0
-    AttackPower: 0
-    Experience: 0
-    Level: 0
-    Unlocked: 0
+    Color: {r: 0.55805445, g: 0, b: 1, a: 1}
