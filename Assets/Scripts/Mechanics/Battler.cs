@@ -1,24 +1,49 @@
 using UnityEngine;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace Mechanics
 {
     public abstract class Battler : MonoBehaviour
     {
-        public float Health;
-        public float AttackPower;
+        [SerializeField] protected MeshRenderer meshRenderer;
+        [SerializeField] protected Image healthBar;
+        
+        protected float health;
+        protected float power;
 
+        private float m_maxHealth;
+
+        public void SetReady(Color color, float _health, float _power)
+        {
+            gameObject.SetActive(true);
+            
+            meshRenderer.material.color = color;
+            m_maxHealth = _health;
+            health = _health;
+            power = _power;
+
+            UpdateHealthBar();
+        }
+        
         public void GetDamage(float damage)
         {
-            Health -= damage;
-
-            if (Health > 0f)
+            health -= damage;
+            UpdateHealthBar();
+            
+            if (health > 0f)
                 return;
             
-            Health = 0f;
+            health = 0f;
             Die();
         }
 
-        public void Die()
+        private void UpdateHealthBar()
+        {
+            healthBar.fillAmount = health / m_maxHealth;
+        }
+        
+        private void Die()
         {
             //
         }

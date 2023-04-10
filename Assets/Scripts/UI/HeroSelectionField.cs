@@ -19,17 +19,12 @@ namespace UI
         private bool m_isBeingSelected;
         private float m_timer;
 
-        private const float tapAndHoldThreshold = 2.5f;
+        private const float tapAndHoldThreshold = 2f;
 
         private void Awake()
         {
             m_screenPos = GetComponent<RectTransform>().anchoredPosition;
             m_outline = GetComponent<Outline>();
-        }
-
-        private void OnEnable()
-        {
-            DeselectHero();
         }
 
         private void Update()
@@ -71,7 +66,7 @@ namespace UI
         
         private void SelectHero()
         {
-            if (!MenuManager.IsNewSelectionAllowed)
+            if (!MenuManager.IsSelectionAllowed)
                 return;
             
             m_isSelected = true;
@@ -90,10 +85,10 @@ namespace UI
         
         public void SetHero(HeroData heroData)
         {
-            //m_image.enabled = heroData.IsUnlocked;
+            m_image.enabled = heroData.IsUnlocked;
 
-            //if (!heroData.IsUnlocked)
-            //return;
+            if (!heroData.IsUnlocked) 
+                return;
 
             m_image.color = heroData.Color;
             m_heroData = heroData;

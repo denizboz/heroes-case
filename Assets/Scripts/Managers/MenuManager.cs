@@ -10,11 +10,11 @@ namespace Managers
     {
         [SerializeField] private HeroSelectionField[] m_selectionFields;
         
-        private int m_numberOfSelectedHeroes;
-
         private static readonly List<HeroData> selectedHeroesList = new List<HeroData>();
 
-        public static bool IsNewSelectionAllowed => selectedHeroesList.Count < 3;
+        public static HeroData[] SelectedDataArray => selectedHeroesList.ToArray();
+        public static bool IsSelectionAllowed => selectedHeroesList.Count < 3;
+
         
         protected override void Awake()
         {
@@ -22,11 +22,19 @@ namespace Managers
             
             EventSystem.AddListener(MenuEvent.HeroSelected, RegisterSelectedHero);
             EventSystem.AddListener(MenuEvent.HeroDeselected, RemoveSelectedHero);
+            
+            EventSystem.AddListener(CoreEvent.BattleStarted, ClearSelection);
         }
 
         private void OnEnable()
         {
             SetupHeroFields();
+        }
+
+        private void OnDisable()
+        {
+            EventSystem.RemoveListener(MenuEvent.HeroSelected, RegisterSelectedHero);
+            EventSystem.RemoveListener(MenuEvent.HeroDeselected, RemoveSelectedHero);
         }
 
         private static void RegisterSelectedHero(HeroData heroData)
@@ -39,14 +47,22 @@ namespace Managers
             selectedHeroesList.Remove(heroData);
         }
 
-        public void SetupHeroFields()
+        private void SetupHeroFields()
         {
-            var dataArray = DataManager.ActiveDataArray;
+            var dataManager = m_dependencyContainer.Resolve<DataManager>();
+            var dataArray = dataManager.LoadDataFromJson();
             
             for (var i = 0; i < dataArray.Length; i++)
             {
                 m_selectionFields[i].SetHero(dataArray[i]);
             }
+        }
+
+        private static void ClearSelection()
+        {
+            selectedHeroesList.Clear();
+            
+            EventSystem.RemoveListener(CoreEvent.BattleStarted, ClearSelection);
         }
     }
 }

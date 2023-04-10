@@ -3,19 +3,19 @@ using Utilities;
 
 namespace Managers
 {
-    public enum CoreEvent { MenuLoaded, BattleStarted, BattleWon, BattleLost }
+    public enum CoreEvent { MenuLoaded, BattleLoaded, BattleStarted, BattleEnded }
     public enum MenuEvent { HeroSelected, HeroDeselected }
     
     public static class EventSystem
     {
-        public static event Action MenuLoadedEvent, BattleStartedEvent, BattleWonEvent, BattleLostEvent;
+        public static event Action MenuLoadedEvent, BattleLoadedEvent, BattleStartedEvent, BattleEndedEvent;
         
         public static event Action<HeroData> HeroSelectedEvent, HeroDeselectedEvent;
 
         
         private static readonly Action[] CoreEvents = new Action[]
         {
-            MenuLoadedEvent, BattleStartedEvent, BattleWonEvent, BattleLostEvent
+            MenuLoadedEvent, BattleLoadedEvent, BattleStartedEvent, BattleEndedEvent
         };
 
         private static readonly Action<HeroData>[] MenuEvents = new Action<HeroData>[]

@@ -9,8 +9,6 @@ namespace Managers
     {
         [SerializeField] private HeroDataContainerSO m_dataContainer;
 
-        public static HeroData[] ActiveDataArray { get; private set; }
-
         private const string jsonFileName = "HeroAttributeData.json";
         private const string prefsKeyForJson = "is_json_created";
         
@@ -22,11 +20,6 @@ namespace Managers
                 return;
             
             GenerateAndSaveAttributes();
-        }
-
-        private void OnEnable()
-        {
-            LoadDataFromJson();
         }
 
         private void GenerateAndSaveAttributes()
@@ -58,13 +51,6 @@ namespace Managers
             SaveDataToJson(dataArray);
         }
 
-        public void UpdateAndSaveData()
-        {
-            //
-            
-            SaveDataToJson(ActiveDataArray);
-        }
-        
         private static void SaveDataToJson(HeroData[] array)
         {
             var path = Path.Combine(Application.persistentDataPath, jsonFileName);
@@ -85,17 +71,17 @@ namespace Managers
             Debug.Log("Json created & saved.");
         }
         
-        private void LoadDataFromJson()
+        public HeroData[] LoadDataFromJson()
         {
             var path = Path.Combine(Application.persistentDataPath, jsonFileName);
             var lines = File.ReadAllLines(path);
 
-            ActiveDataArray = new HeroData[lines.Length];
+            var dataArray = new HeroData[lines.Length];
             
-            for (var i = 0; i < ActiveDataArray.Length; i++)
-            {
-                ActiveDataArray[i] = JsonUtility.FromJson<HeroData>(lines[i]);
-            }
+            for (var i = 0; i < dataArray.Length; i++)
+                dataArray[i] = JsonUtility.FromJson<HeroData>(lines[i]);
+
+            return dataArray;
         }
     }
 }
