@@ -4,11 +4,12 @@ using Utilities;
 
 namespace Managers
 {
+    [DefaultExecutionOrder(-30)]
     public class DataManager : Manager
     {
         [SerializeField] private HeroDataContainerSO m_dataContainer;
 
-        private static HeroData[] m_activeDataArray;
+        public static HeroData[] ActiveDataArray { get; private set; }
 
         private const string jsonFileName = "HeroAttributeData.json";
         private const string prefsKeyForJson = "is_json_created";
@@ -61,7 +62,7 @@ namespace Managers
         {
             //
             
-            SaveDataToJson(m_activeDataArray);
+            SaveDataToJson(ActiveDataArray);
         }
         
         private static void SaveDataToJson(HeroData[] array)
@@ -89,11 +90,11 @@ namespace Managers
             var path = Path.Combine(Application.persistentDataPath, jsonFileName);
             var lines = File.ReadAllLines(path);
 
-            m_activeDataArray = new HeroData[lines.Length];
+            ActiveDataArray = new HeroData[lines.Length];
             
-            for (var i = 0; i < m_activeDataArray.Length; i++)
+            for (var i = 0; i < ActiveDataArray.Length; i++)
             {
-                m_activeDataArray[i] = JsonUtility.FromJson<HeroData>(lines[i]);
+                ActiveDataArray[i] = JsonUtility.FromJson<HeroData>(lines[i]);
             }
         }
     }

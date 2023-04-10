@@ -17,13 +17,23 @@ MonoBehaviour:
   MinAttackPower: 1
   MaxAttackPower: 5
   IdentityArray:
-  - Name: Feynman
-    Color: {r: 0, g: 0.7666669, b: 1, a: 1}
-  - Name: Einstein
-    Color: {r: 1, g: 0, b: 0, a: 1}
-  - Name: Curie
-    Color: {r: 0.99853635, g: 1, b: 0, a: 1}
-  - Name: Hegel
-    Color: {r: 0, g: 1, b: 0.12291002, a: 1}
-  - Name: Kant
+  - Name: Mario
+    Color: {r: 1, g: 0.021075817, b: 0, a: 1}
+  - Name: Luigi
+    Color: {r: 0, g: 1, b: 0.074855804, a: 1}
+  - Name: Peach
+    Color: {r: 1, g: 0.35294116, b: 0.9342553, a: 1}
+  - Name: Bowser
+    Color: {r: 0.21698111, g: 0.05424528, b: 0, a: 1}
+  - Name: Yoshi
+    Color: {r: 0.01581815, g: 0.3962264, b: 0, a: 1}
+  - Name: Toad
+    Color: {r: 0.9797381, g: 1, b: 0, a: 1}
+  - Name: Goomba
+    Color: {r: 0.5566038, g: 0.27385193, b: 0.18588462, a: 1}
+  - Name: Koopa
+    Color: {r: 0.57104504, g: 0.8301887, b: 0.17543605, a: 1}
+  - Name: Donkey
+    Color: {r: 1, g: 0.5504771, b: 0, a: 1}
+  - Name: Kamek
     Color: {r: 0.55805445, g: 0, b: 1, a: 1}

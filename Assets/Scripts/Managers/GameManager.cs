@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Utilities;
 
 namespace Managers
@@ -9,10 +10,6 @@ namespace Managers
     {
         public static GameManager Instance;
 
-        private DataManager m_dataManager;
-        private MenuManager m_menuManager;
-        private BattleManager m_battleManager;
-        
         protected override void Awake()
         {
             #region SINGLETON
@@ -26,36 +23,28 @@ namespace Managers
                 Destroy(gameObject);
             }
             #endregion
-        
-            LoadPrefs();
+
+            Application.targetFrameRate = 60;
+            Input.multiTouchEnabled = false;
         }
 
         private void Start()
         {
-            LoadDependencies();
-            LoadMenu();
+            LoadMenu(forTheFirstTime: true);
         }
 
-        public void LoadPrefs()
+        public void LoadMenu(bool forTheFirstTime = false)
         {
-        
-        }
-        
-        public void LoadDependencies()
-        {
-            m_dataManager = m_dependencyContainer.Resolve<DataManager>();
-            m_menuManager = m_dependencyContainer.Resolve<MenuManager>();
-            m_battleManager = m_dependencyContainer.Resolve<BattleManager>();
-        }
-
-        public void LoadMenu()
-        {
-        
+            if (!forTheFirstTime)
+                SceneManager.UnloadSceneAsync(2);
+            
+            SceneManager.LoadScene(1, LoadSceneMode.Additive);
         }
 
         public void LoadBattle()
         {
-        
+            SceneManager.UnloadSceneAsync(1);
+            SceneManager.LoadScene(2, LoadSceneMode.Additive);
         }
     }
 }
