@@ -16,7 +16,6 @@ namespace Mechanics
         private static Sequence delayedSequence;
         
         private const float duration = 0.5f, temporalOffset = 0.15f;
-        private const float changeTurnsDelay = 1f;
 
         private void Awake()
         {

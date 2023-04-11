@@ -32,7 +32,6 @@ namespace Utilities
         public Color Color;
     }
 
-    [Serializable]
     public struct HeroData
     {
         public string Name;

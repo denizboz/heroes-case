@@ -1,6 +1,9 @@
+using System;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using Utilities;
+using Random = UnityEngine.Random;
 
 namespace Managers
 {
@@ -9,8 +12,13 @@ namespace Managers
     {
         [SerializeField] private HeroDataContainerSO m_dataContainer;
 
+        private static int battleCount;
+
+        private const int stepForProgress = 5;
+        
         private const string jsonFileName = "HeroAttributeData.json";
         private const string prefsKeyForJson = "is_json_created";
+        private const string prefsKeyForBattleCount = "battle_count";
         
         protected override void Awake()
         {
@@ -22,8 +30,18 @@ namespace Managers
             GenerateAndSaveAttributes();
         }
 
+        private void OnEnable()
+        {
+            battleCount = PlayerPrefs.GetInt(prefsKeyForBattleCount);
+            
+            GameEvents.AddListener(CoreEvent.BattleWon, UpdatePersistentData);
+            GameEvents.AddListener(CoreEvent.BattleLost, UpdatePersistentData);
+        }
+
         private void GenerateAndSaveAttributes()
         {
+            PlayerPrefs.SetInt(prefsKeyForBattleCount, 0);
+            
             var identityArray = m_dataContainer.IdentityArray;
 
             var totalHeroCount = identityArray.Length;
@@ -55,7 +73,9 @@ namespace Managers
         {
             var path = Path.Combine(Application.persistentDataPath, jsonFileName);
 
-            var fileStream = new FileStream(path, FileMode.Create);
+            var fileMode = File.Exists(path) ? FileMode.Open : FileMode.Create;
+            var fileStream = new FileStream(path, fileMode);
+            
             var writer = new StreamWriter(fileStream);
             
             for (var i = 0; i < array.Length; i++)
@@ -68,7 +88,6 @@ namespace Managers
             fileStream.Close();
             
             PlayerPrefs.SetInt(prefsKeyForJson, 1);
-            Debug.Log("Json created & saved.");
         }
         
         public HeroData[] LoadDataFromJson()
@@ -82,6 +101,54 @@ namespace Managers
                 dataArray[i] = JsonUtility.FromJson<HeroData>(lines[i]);
 
             return dataArray;
+        }
+
+        private void UpdatePersistentData()
+        {
+            var aliveHeroNames = BattleManager.GetAliveHeroNames();
+            
+            Debug.Log(aliveHeroNames.Length.ToString());
+            
+            var dataArray = LoadDataFromJson();
+            
+            foreach (var _name in aliveHeroNames)
+            {
+                var entry = dataArray.Single(data => data.Name == _name);
+                int index = Array.IndexOf(dataArray, entry);
+                
+                entry.Experience++;
+
+                if (entry.Experience % stepForProgress == 0)
+                {
+                    entry.MaxHealth *= 1.1f;
+                    entry.AttackPower *= 1.1f;
+
+                    entry.Experience = 0;
+                }
+
+                dataArray[index] = entry;
+            }
+            
+            battleCount++;
+            PlayerPrefs.SetInt(prefsKeyForBattleCount, battleCount);
+            
+            if (battleCount % stepForProgress != 0)
+            {
+                SaveDataToJson(dataArray);
+                return;
+            }
+            
+            int unlockedCount = dataArray.Count(entry => entry.IsUnlocked);
+
+            if (unlockedCount > 9)
+                return;
+
+            dataArray[unlockedCount].IsUnlocked = true;
+            
+            SaveDataToJson(dataArray);
+            
+            battleCount = 0;
+            PlayerPrefs.SetInt(prefsKeyForBattleCount, battleCount);
         }
     }
 }

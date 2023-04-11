@@ -8,16 +8,19 @@ namespace Mechanics
     {
         [SerializeField] protected MeshRenderer meshRenderer;
         [SerializeField] protected Image healthBar;
+
+        [HideInInspector] public string Name;
         
         private float m_power;
         private float m_health;
 
         private float m_maxHealth;
 
-        public void SetReady(Color color, float health, float power)
+        public void SetReady(string _name, Color color, float health, float power)
         {
             gameObject.SetActive(true);
-            
+
+            Name = _name;
             meshRenderer.material.color = color;
             m_maxHealth = health;
             m_health = health;
