@@ -123,7 +123,7 @@ namespace Managers
                     entry.MaxHealth *= 1.1f;
                     entry.AttackPower *= 1.1f;
 
-                    entry.Experience = 0;
+                    entry.Level++;
                 }
 
                 dataArray[index] = entry;
