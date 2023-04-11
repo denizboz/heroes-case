@@ -5,7 +5,6 @@ namespace Managers
 {
     public enum CoreEvent { MenuLoaded, BattleLoaded, BattleStarted, BattleWon, BattleLost }
     public enum MenuEvent { HeroSelected, HeroDeselected }
-    
     public enum BattleEvent { HeroIsShot, EnemyIsShot }
     
     public static class GameEvents

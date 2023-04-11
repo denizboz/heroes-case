@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e252a59e-5195-4ab6-9d96-d2679b1bb0ef" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/DataManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/DataManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/UserSettings/EditorUserSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Managers/GameEvents.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Managers/GameEvents.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Utilities/HeroDataContainerSO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Utilities/HeroDataContainerSO.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +94,7 @@
       <workItem from="1681020120833" duration="26801000" />
       <workItem from="1681062234135" duration="95000" />
       <workItem from="1681112532890" duration="36297000" />
-      <workItem from="1681192382197" duration="24824000" />
+      <workItem from="1681192382197" duration="26311000" />
     </task>
     <servers />
   </component>
