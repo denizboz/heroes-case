@@ -20,10 +20,10 @@ namespace Managers
         {
             m_dependencyContainer.Bind<MenuManager>(this);
             
-            EventSystem.AddListener(MenuEvent.HeroSelected, RegisterSelectedHero);
-            EventSystem.AddListener(MenuEvent.HeroDeselected, RemoveSelectedHero);
+            GameEvents.AddListener(MenuEvent.HeroSelected, RegisterSelectedHero);
+            GameEvents.AddListener(MenuEvent.HeroDeselected, RemoveSelectedHero);
             
-            EventSystem.AddListener(CoreEvent.BattleStarted, ClearSelection);
+            GameEvents.AddListener(CoreEvent.BattleStarted, ClearSelection);
         }
 
         private void OnEnable()
@@ -33,8 +33,8 @@ namespace Managers
 
         private void OnDisable()
         {
-            EventSystem.RemoveListener(MenuEvent.HeroSelected, RegisterSelectedHero);
-            EventSystem.RemoveListener(MenuEvent.HeroDeselected, RemoveSelectedHero);
+            GameEvents.RemoveListener(MenuEvent.HeroSelected, RegisterSelectedHero);
+            GameEvents.RemoveListener(MenuEvent.HeroDeselected, RemoveSelectedHero);
         }
 
         private static void RegisterSelectedHero(HeroData heroData)
@@ -62,7 +62,7 @@ namespace Managers
         {
             selectedHeroesList.Clear();
             
-            EventSystem.RemoveListener(CoreEvent.BattleStarted, ClearSelection);
+            GameEvents.RemoveListener(CoreEvent.BattleStarted, ClearSelection);
         }
     }
 }

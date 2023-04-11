@@ -7,7 +7,7 @@ namespace UI
     {
         public static void GoBackToMenu()
         {
-            EventSystem.Invoke(CoreEvent.MenuLoaded);
+            GameEvents.Invoke(CoreEvent.MenuLoaded);
         }
     }
 }

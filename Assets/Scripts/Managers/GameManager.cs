@@ -14,8 +14,8 @@ namespace Managers
 
         private void OnEnable()
         {
-            EventSystem.AddListener(CoreEvent.MenuLoaded, LoadMenu);
-            EventSystem.AddListener(CoreEvent.BattleLoaded, LoadBattle);
+            GameEvents.AddListener(CoreEvent.MenuLoaded, LoadMenu);
+            GameEvents.AddListener(CoreEvent.BattleLoaded, LoadBattle);
             
             SceneManager.LoadScene(1, LoadSceneMode.Additive);
         }

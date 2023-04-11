@@ -1,23 +1,26 @@
 using Mechanics;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Managers
 {
-    public enum BattleState { PlayerTurn, EnemyTurn, Idle }
+    public enum BattleState { PlayerTurn, EnemyTurn, Idle, Over }
     
     public class BattleManager : Manager
     {
         [SerializeField] private Hero[] m_heroes;
         [SerializeField] private Enemy m_enemy;
-        [SerializeField] private LightBeam m_lightBeam;
 
-        private static BattleState m_battleState;
-        
+        private static readonly List<Battler> liveHeroesList = new List<Battler>(3);
+
         private static Camera mainCam;
+        private static BattleState m_battleState;
 
+        
         protected override void Awake()
         {
             m_dependencyContainer.Bind<BattleManager>(this);
+            
             mainCam = Camera.main;
         }
 
@@ -26,7 +29,16 @@ namespace Managers
             LoadHeroes();
             m_battleState = BattleState.PlayerTurn;
             
-            EventSystem.Invoke(CoreEvent.BattleStarted);
+            GameEvents.AddListener(BattleEvent.HeroIsShot, AllowHeroToAttack);
+            GameEvents.AddListener(BattleEvent.EnemyIsShot, MakeEnemyAttack);
+            
+            GameEvents.Invoke(CoreEvent.BattleStarted);
+        }
+
+        private void OnDisable()
+        {
+            GameEvents.RemoveListener(BattleEvent.HeroIsShot, AllowHeroToAttack);
+            GameEvents.RemoveListener(BattleEvent.EnemyIsShot, MakeEnemyAttack);
         }
 
         private void Update()
@@ -42,7 +54,8 @@ namespace Managers
                 {
                     if (hit.transform.TryGetComponent(out Hero hero))
                     {
-                        m_lightBeam.Shoot(from: hero.transform.position, to: m_enemy.transform.position);
+                        hero.Attack(m_enemy);
+                        ChangeTurns(BattleState.Idle);
                     }
                 }
             }
@@ -50,6 +63,8 @@ namespace Managers
 
         private void LoadHeroes()
         {
+            liveHeroesList.Clear();
+            
             var selectedDataArray = MenuManager.SelectedDataArray;
 
             for (var i = 0; i < 3; i++)
@@ -58,14 +73,46 @@ namespace Managers
                 var data = selectedDataArray[i];
                 
                 hero.SetReady(data.Color, data.MaxHealth, data.AttackPower);
+
+                liveHeroesList.Add(hero);
             }
             
             m_enemy.SetReady(Color.red, 10f, 3f);
         }
 
-        public static void ChangeTurns(BattleState battleState)
+        private static void ChangeTurns(BattleState battleState)
         {
             m_battleState = battleState;
+        }
+
+        private static void AllowHeroToAttack()
+        {
+            ChangeTurns(BattleState.PlayerTurn);
+        }
+        
+        private void MakeEnemyAttack()
+        {
+            int rand = Random.Range(0, liveHeroesList.Count);
+            m_enemy.Attack(liveHeroesList[rand]);
+        }
+        
+        public static void BattlerDown(Battler battler)
+        {
+            if (battler is Enemy)
+                EndBattle(playerWon: true);
+            else
+            {
+                liveHeroesList.Remove(battler);
+                
+                if (liveHeroesList.Count < 1)
+                    EndBattle(playerWon: false);
+            }
+        }
+
+        private static void EndBattle(bool playerWon)
+        {
+            m_battleState = BattleState.Over;
+            GameEvents.Invoke(playerWon ? CoreEvent.BattleWon : CoreEvent.BattleLost);
         }
     }
 }

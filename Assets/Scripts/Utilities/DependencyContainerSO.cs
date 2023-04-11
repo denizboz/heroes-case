@@ -7,7 +7,7 @@ namespace Utilities
     [CreateAssetMenu(fileName = "DependencyContainer", menuName = "Dependency/Dependency Container")]
     public class DependencyContainerSO : ScriptableObject
     {
-        public readonly Dictionary<Type, object> m_systemsDictionary = new Dictionary<Type, object>(8);
+        private readonly Dictionary<Type, object> m_systemsDictionary = new Dictionary<Type, object>(8);
 
         public void Bind<T>(T obj)
         {

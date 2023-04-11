@@ -1,5 +1,5 @@
+using Managers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Mechanics
@@ -9,43 +9,51 @@ namespace Mechanics
         [SerializeField] protected MeshRenderer meshRenderer;
         [SerializeField] protected Image healthBar;
         
-        protected float health;
-        protected float power;
+        private float m_power;
+        private float m_health;
 
         private float m_maxHealth;
 
-        public void SetReady(Color color, float _health, float _power)
+        public void SetReady(Color color, float health, float power)
         {
             gameObject.SetActive(true);
             
             meshRenderer.material.color = color;
-            m_maxHealth = _health;
-            health = _health;
-            power = _power;
+            m_maxHealth = health;
+            m_health = health;
+            m_power = power;
 
             UpdateHealthBar();
+        }
+
+        public void Attack(Battler target)
+        {
+            Laser.Shoot(this, target, m_power);
         }
         
         public void GetDamage(float damage)
         {
-            health -= damage;
+            m_health -= damage;
             UpdateHealthBar();
             
-            if (health > 0f)
+            GameEvents.Invoke(this is Hero ? BattleEvent.HeroIsShot : BattleEvent.EnemyIsShot);
+            
+            if (m_health > 0f)
                 return;
             
-            health = 0f;
+            m_health = 0f;
             Die();
         }
 
         private void UpdateHealthBar()
         {
-            healthBar.fillAmount = health / m_maxHealth;
+            healthBar.fillAmount = m_health / m_maxHealth;
         }
         
         private void Die()
         {
-            //
+            gameObject.SetActive(false);
+            BattleManager.BattlerDown(this);
         }
     }
 }

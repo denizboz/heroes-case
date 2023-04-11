@@ -13,8 +13,8 @@ namespace UI
         {
             button = GetComponent<Button>();
             
-            EventSystem.AddListener(MenuEvent.HeroSelected, UpdateInteractability);
-            EventSystem.AddListener(MenuEvent.HeroDeselected, UpdateInteractability);
+            GameEvents.AddListener(MenuEvent.HeroSelected, UpdateInteractability);
+            GameEvents.AddListener(MenuEvent.HeroDeselected, UpdateInteractability);
         }
 
         private void OnEnable()
@@ -24,8 +24,8 @@ namespace UI
 
         private void OnDisable()
         {
-            EventSystem.RemoveListener(MenuEvent.HeroSelected, UpdateInteractability);
-            EventSystem.RemoveListener(MenuEvent.HeroDeselected, UpdateInteractability);
+            GameEvents.RemoveListener(MenuEvent.HeroSelected, UpdateInteractability);
+            GameEvents.RemoveListener(MenuEvent.HeroDeselected, UpdateInteractability);
         }
 
         private static void UpdateInteractability(bool val)
@@ -40,7 +40,7 @@ namespace UI
         
         public static void StartBattle()
         {
-            EventSystem.Invoke(CoreEvent.BattleLoaded);
+            GameEvents.Invoke(CoreEvent.BattleLoaded);
         }
     }
 }
