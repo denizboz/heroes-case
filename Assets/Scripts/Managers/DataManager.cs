@@ -96,7 +96,7 @@ namespace Managers
             var lines = File.ReadAllLines(path);
 
             var dataArray = new HeroData[lines.Length];
-            
+
             for (var i = 0; i < dataArray.Length; i++)
                 dataArray[i] = JsonUtility.FromJson<HeroData>(lines[i]);
 
@@ -106,8 +106,6 @@ namespace Managers
         private void UpdatePersistentData()
         {
             var aliveHeroNames = BattleManager.GetAliveHeroNames();
-            
-            Debug.Log(aliveHeroNames.Length.ToString());
             
             var dataArray = LoadDataFromJson();
             

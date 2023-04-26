@@ -8,5 +8,10 @@ namespace Managers
         [SerializeField] protected DependencyContainerSO m_dependencyContainer;
 
         protected abstract void Awake();
+
+        private void Start()
+        {
+            m_dependencyContainer.Bind(this);
+        }
     }
 }

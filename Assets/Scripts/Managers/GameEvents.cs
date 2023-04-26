@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Utilities;
 
 namespace Managers
@@ -9,70 +10,66 @@ namespace Managers
     
     public static class GameEvents
     {
-        public static event Action MenuLoadedEvent, BattleLoadedEvent, BattleStartedEvent, BattleWonEvent, BattleLostEvent;
-        public static event Action HeroIsShotEvent, EnemyIsShotEvent; 
-        public static event Action<HeroData> HeroSelectedEvent, HeroDeselectedEvent;
-
-        
-        private static readonly Action[] CoreEvents = new Action[]
-        {
-            MenuLoadedEvent, BattleLoadedEvent, BattleStartedEvent, BattleWonEvent, BattleLostEvent
-        };
-
-        private static readonly Action[] BattleEvents = new Action[]
-        {
-            HeroIsShotEvent, EnemyIsShotEvent
-        };
-        
-        private static readonly Action<HeroData>[] MenuEvents = new Action<HeroData>[]
-        {
-            HeroSelectedEvent, HeroDeselectedEvent
-        };
+        private static readonly Dictionary<CoreEvent, Action> coreEvents = new Dictionary<CoreEvent, Action>();
+        private static readonly Dictionary<BattleEvent, Action> battleEvents = new Dictionary<BattleEvent, Action>();
+        private static readonly Dictionary<MenuEvent, Action<HeroData>> menuEvents = new Dictionary<MenuEvent, Action<HeroData>>();
 
         
         public static void Invoke(CoreEvent coreEvent)
         {
-            CoreEvents[(int)coreEvent]?.Invoke();
+            coreEvents[coreEvent]?.Invoke();
         }
 
         public static void Invoke(BattleEvent battleEvent)
         {
-            BattleEvents[(int)battleEvent]?.Invoke();
+            battleEvents[battleEvent]?.Invoke();
         }
         
         public static void Invoke(MenuEvent menuEvent, HeroData heroData)
         {
-            MenuEvents[(int)menuEvent]?.Invoke(heroData);
+            menuEvents[menuEvent]?.Invoke(heroData);
         }
         
         public static void AddListener(CoreEvent coreEvent, Action action)
         {
-            CoreEvents[(int)coreEvent] += action;
+            if (!coreEvents.TryAdd(coreEvent, action))
+                coreEvents[coreEvent] += action;
         }
         
         public static void AddListener(BattleEvent battleEvent, Action action)
         {
-            BattleEvents[(int)battleEvent] += action;
+            if (!battleEvents.TryAdd(battleEvent, action))
+                battleEvents[battleEvent] += action;
         }
 
         public static void AddListener(MenuEvent menuEvent, Action<HeroData> action)
         {
-            MenuEvents[(int)menuEvent] += action;
+            if (!menuEvents.TryAdd(menuEvent, action))
+                menuEvents[menuEvent] += action;
         }
         
         public static void RemoveListener(CoreEvent coreEvent, Action action)
         {
-            CoreEvents[(int)coreEvent] -= action;
+            if (!coreEvents.ContainsKey(coreEvent))
+                return;
+            
+            coreEvents[coreEvent] -= action;
         }
         
         public static void RemoveListener(BattleEvent battleEvent, Action action)
         {
-            BattleEvents[(int)battleEvent] -= action;
+            if (!battleEvents.ContainsKey(battleEvent))
+                return;
+            
+            battleEvents[battleEvent] -= action;
         }
         
         public static void RemoveListener(MenuEvent menuEvent, Action<HeroData> action)
         {
-            MenuEvents[(int)menuEvent] -= action;
+            if (!menuEvents.ContainsKey(menuEvent))
+                return;
+            
+            menuEvents[menuEvent] -= action;
         }
     }
 }
