@@ -1,3 +1,6 @@
+using Events;
+using Events.Implementations.Core;
+using Events.Implementations.Menu;
 using Managers;
 using Utilities;
 using UnityEngine;
@@ -13,34 +16,29 @@ namespace UI
         {
             button = GetComponent<Button>();
             
-            GameEvents.AddListener(MenuEvent.HeroSelected, UpdateInteractability);
-            GameEvents.AddListener(MenuEvent.HeroDeselected, UpdateInteractability);
+            GameEvents.AddListener<HeroSelectedEvent>(UpdateInteractability);
+            GameEvents.AddListener<HeroDeselectedEvent>(UpdateInteractability);
         }
 
         private void OnEnable()
         {
-            UpdateInteractability(false);
+            button.interactable = false;
         }
 
         private void OnDisable()
         {
-            GameEvents.RemoveListener(MenuEvent.HeroSelected, UpdateInteractability);
-            GameEvents.RemoveListener(MenuEvent.HeroDeselected, UpdateInteractability);
+            GameEvents.RemoveListener<HeroSelectedEvent>(UpdateInteractability);
+            GameEvents.RemoveListener<HeroDeselectedEvent>(UpdateInteractability);
         }
 
-        private static void UpdateInteractability(bool val)
-        {
-            button.interactable = val;
-        }
-
-        private static void UpdateInteractability(HeroData data)
+        private static void UpdateInteractability(object data)
         {
             button.interactable = !MenuManager.IsSelectionAllowed;
         }
         
         public static void StartBattle()
         {
-            GameEvents.Invoke(CoreEvent.BattleLoaded);
+            GameEvents.Invoke<BattleLoadedEvent>();
         }
     }
 }

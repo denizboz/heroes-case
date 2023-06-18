@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using Events;
+using Events.Implementations.Core;
 using UnityEngine;
 using Utilities;
 using Random = UnityEngine.Random;
@@ -33,9 +35,9 @@ namespace Managers
         private void OnEnable()
         {
             battleCount = PlayerPrefs.GetInt(prefsKeyForBattleCount);
-            
-            GameEvents.AddListener(CoreEvent.BattleWon, UpdatePersistentData);
-            GameEvents.AddListener(CoreEvent.BattleLost, UpdatePersistentData);
+
+            GameEvents.AddListener<BattleWonEvent>(UpdatePersistentData);
+            GameEvents.AddListener<BattleStartedEvent>(UpdatePersistentData);
         }
 
         private void GenerateAndSaveAttributes()
@@ -103,7 +105,7 @@ namespace Managers
             return dataArray;
         }
 
-        private void UpdatePersistentData()
+        private void UpdatePersistentData(object obj)
         {
             var aliveHeroNames = BattleManager.GetAliveHeroNames();
             

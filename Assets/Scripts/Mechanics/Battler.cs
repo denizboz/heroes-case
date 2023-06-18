@@ -1,3 +1,5 @@
+using Events;
+using Events.Implementations.Battle;
 using Managers;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,8 +41,11 @@ namespace Mechanics
             m_health -= damage;
             UpdateHealthBar();
             
-            GameEvents.Invoke(this is Hero ? BattleEvent.HeroIsShot : BattleEvent.EnemyIsShot);
-            
+            if (this is Hero)
+                GameEvents.Invoke<HeroIsShotEvent>();
+            else
+                GameEvents.Invoke<EnemyIsShotEvent>();
+
             if (m_health > 0f)
                 return;
             

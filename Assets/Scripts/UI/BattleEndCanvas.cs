@@ -1,5 +1,6 @@
+using Events;
+using Events.Implementations.Core;
 using UnityEngine;
-using Managers;
 using TMPro;
 
 namespace UI
@@ -22,26 +23,26 @@ namespace UI
 
         private void OnEnable()
         {
-            GameEvents.AddListener(CoreEvent.BattleWon, ShowWonUI);
-            GameEvents.AddListener(CoreEvent.BattleLost, ShowLostUI);
+            GameEvents.AddListener<BattleWonEvent>(ShowWonUI);
+            GameEvents.AddListener<BattleLostEvent>(ShowLostUI);
         }
 
         private void OnDisable()
         {
-            GameEvents.RemoveListener(CoreEvent.BattleWon, ShowWonUI);
-            GameEvents.RemoveListener(CoreEvent.BattleLost, ShowLostUI);
+            GameEvents.RemoveListener<BattleWonEvent>(ShowWonUI);
+            GameEvents.RemoveListener<BattleLostEvent>(ShowLostUI);
         }
 
-        private static void ShowWonUI()
+        private static void ShowWonUI(object obj)
         {
             ShowCanvas(battleWon: true);
         }
 
-        private static void ShowLostUI()
+        private static void ShowLostUI(object obj)
         {
             ShowCanvas(battleWon: false);
         }
-
+        
         private static void ShowCanvas(bool battleWon)
         {
             canvas.enabled = true;

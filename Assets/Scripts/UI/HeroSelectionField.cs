@@ -1,3 +1,5 @@
+using Events;
+using Events.Implementations.Menu;
 using Managers;
 using Utilities;
 using UnityEngine;
@@ -72,7 +74,7 @@ namespace UI
             m_isSelected = true;
             m_outline.enabled = true;
             
-            GameEvents.Invoke(MenuEvent.HeroSelected, m_heroData);
+            GameEvents.Invoke<HeroSelectedEvent>(m_heroData);
         }
 
         private void DeselectHero()
@@ -80,7 +82,7 @@ namespace UI
             m_isSelected = false;
             m_outline.enabled = false;
             
-            GameEvents.Invoke(MenuEvent.HeroDeselected, m_heroData);
+            GameEvents.Invoke<HeroDeselectedEvent>(m_heroData);
         }
         
         public void SetHero(HeroData heroData)

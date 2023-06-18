@@ -3,6 +3,9 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Events;
+using Events.Implementations.Battle;
+using Events.Implementations.Core;
 
 namespace Managers
 {
@@ -30,16 +33,16 @@ namespace Managers
             LoadHeroes();
             battleState = BattleState.PlayerTurn;
             
-            GameEvents.AddListener(BattleEvent.HeroIsShot, AllowHeroToAttack);
-            GameEvents.AddListener(BattleEvent.EnemyIsShot, MakeEnemyAttack);
+            GameEvents.AddListener<HeroIsShotEvent>(AllowHeroToAttack);
+            GameEvents.AddListener<EnemyIsShotEvent>(MakeEnemyAttack);
             
-            GameEvents.Invoke(CoreEvent.BattleStarted);
+            GameEvents.Invoke<BattleStartedEvent>();
         }
 
         private void OnDisable()
         {
-            GameEvents.RemoveListener(BattleEvent.HeroIsShot, AllowHeroToAttack);
-            GameEvents.RemoveListener(BattleEvent.EnemyIsShot, MakeEnemyAttack);
+            GameEvents.RemoveListener<HeroIsShotEvent>(AllowHeroToAttack);
+            GameEvents.RemoveListener<EnemyIsShotEvent>(MakeEnemyAttack);
         }
 
         private void Update()
@@ -86,12 +89,12 @@ namespace Managers
             battleState = state;
         }
 
-        private static void AllowHeroToAttack()
+        private static void AllowHeroToAttack(object obj)
         {
             ChangeTurns(BattleState.PlayerTurn);
         }
         
-        private void MakeEnemyAttack()
+        private void MakeEnemyAttack(object obj)
         {
             if (battleState == BattleState.Over)
                 return;
@@ -122,7 +125,11 @@ namespace Managers
         private static void EndBattle(bool playerWon)
         {
             battleState = BattleState.Over;
-            GameEvents.Invoke(playerWon ? CoreEvent.BattleWon : CoreEvent.BattleLost);
+            
+            if (playerWon)
+                GameEvents.Invoke<BattleWonEvent>();
+            else
+                GameEvents.Invoke<BattleLostEvent>();
         }
 
         public static string[] GetAliveHeroNames()

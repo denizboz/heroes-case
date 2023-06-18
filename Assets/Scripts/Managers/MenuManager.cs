@@ -1,5 +1,8 @@
 using Utilities;
 using System.Collections.Generic;
+using Events;
+using Events.Implementations.Core;
+using Events.Implementations.Menu;
 using UI;
 using UnityEngine;
 
@@ -20,10 +23,10 @@ namespace Managers
         {
             m_dependencyContainer.Bind<MenuManager>(this);
             
-            GameEvents.AddListener(MenuEvent.HeroSelected, RegisterSelectedHero);
-            GameEvents.AddListener(MenuEvent.HeroDeselected, RemoveSelectedHero);
+            GameEvents.AddListener<HeroSelectedEvent>(RegisterSelectedHero);
+            GameEvents.AddListener<HeroDeselectedEvent>(RemoveSelectedHero);
             
-            GameEvents.AddListener(CoreEvent.BattleStarted, ClearSelection);
+            GameEvents.AddListener<BattleStartedEvent>(ClearSelection);
         }
 
         private void OnEnable()
@@ -33,18 +36,18 @@ namespace Managers
 
         private void OnDisable()
         {
-            GameEvents.RemoveListener(MenuEvent.HeroSelected, RegisterSelectedHero);
-            GameEvents.RemoveListener(MenuEvent.HeroDeselected, RemoveSelectedHero);
+            GameEvents.RemoveListener<HeroSelectedEvent>(RegisterSelectedHero);
+            GameEvents.RemoveListener<HeroDeselectedEvent>(RemoveSelectedHero);
         }
 
-        private static void RegisterSelectedHero(HeroData heroData)
+        private static void RegisterSelectedHero(object heroData)
         {
-            selectedHeroesList.Add(heroData);
+            selectedHeroesList.Add((HeroData)heroData);
         }
 
-        private static void RemoveSelectedHero(HeroData heroData)
+        private static void RemoveSelectedHero(object heroData)
         {
-            selectedHeroesList.Remove(heroData);
+            selectedHeroesList.Remove((HeroData)heroData);
         }
 
         private void SetupHeroFields()
@@ -58,11 +61,11 @@ namespace Managers
             }
         }
 
-        private static void ClearSelection()
+        private static void ClearSelection(object obj)
         {
             selectedHeroesList.Clear();
             
-            GameEvents.RemoveListener(CoreEvent.BattleStarted, ClearSelection);
+            GameEvents.RemoveListener<BattleStartedEvent>(ClearSelection);
         }
     }
 }

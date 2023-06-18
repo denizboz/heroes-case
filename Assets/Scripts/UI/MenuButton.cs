@@ -1,4 +1,5 @@
-using Managers;
+using Events;
+using Events.Implementations.Core;
 using UnityEngine;
 
 namespace UI
@@ -7,7 +8,7 @@ namespace UI
     {
         public static void GoBackToMenu()
         {
-            GameEvents.Invoke(CoreEvent.MenuLoaded);
+            GameEvents.Invoke<MenuLoadedEvent>();
         }
     }
 }
